@@ -1,4 +1,7 @@
 import { Routes, Route } from "react-router-dom"
+import { PostProvider } from "./context/PostContext"
+import { UserProvider } from "./context/userContext"
+
 //import { useState } from 'react'
 //import './App.css'
 import Header from "./components/Header"
@@ -15,12 +18,16 @@ function App() {
     <div className='app'>
       <Header />
       <main>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/about" element={<About />} />
-        </Routes>
+        <UserProvider>
+          <PostProvider>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/about" element={<About />} />
+            </Routes>
+          </PostProvider>
+        </UserProvider>
       </main>
     </div>
   )

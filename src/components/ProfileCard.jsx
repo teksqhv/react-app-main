@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Post from "./Post";
 import avatar from "../assets/react.svg";
+import { useUser } from "../context/userContext";
 
 function ProfileCard() {
     // const [posts, setPosts] = useState([
@@ -49,6 +50,7 @@ function ProfileCard() {
     //     );
     // }
 
+    const {userName} = useUser();
     return (
         <section className="profile-card">
             <div className="profile">
@@ -56,7 +58,7 @@ function ProfileCard() {
                     <img src={avatar} alt="avatar" />
                 </div>
                 <div className="profile-info">
-                    <h2>Name</h2>
+                    <h2>{userName}</h2>
                     <p>@nickname</p>
                 </div>
                 <p className="profile-discription">Студенточека</p>

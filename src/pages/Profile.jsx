@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import ProfileCard from "../components/ProfileCard";
 import Post from "../components/Post";
+import { usePosts } from "../context/PostContext";
+import { useUser } from "../context/userContext";
 
 function Profile() {
   // const [posts, setPosts] = useState([
@@ -12,50 +14,59 @@ function Profile() {
   //   },
   // ]);
 
-  const [posts, setPosts] = useState(() => 
-  {
-    const savedPosts = localStorage.getItem("posts");
-    if(savedPosts){
-      return JSON.parse(savedPosts)
-    }
-    return [
-      {
-        id: 1,
-        title: "Полезное что то там",
-        text: "Вам очень интересно читать этот пост сиксевен сиксевен",
-        author: "SixSeven",
-      },
-    ];
-  });
+  // const [posts, setPosts] = useState(() => 
+  // {
+  //   const savedPosts = localStorage.getItem("posts");
+  //   if(savedPosts){
+  //     return JSON.parse(savedPosts)
+  //   }
+  //   return [
+  //     {
+  //       id: 1,
+  //       title: "Полезное что то там",
+  //       text: "Вам очень интересно читать этот пост сиксевен сиксевен",
+  //       author: "SixSeven",
+  //     },
+  //   ];
+  // });
 
+  const {userName} = useUser();
+  const {posts, setPosts} = usePosts();
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
+  const [error, setError] = useState("");
 
   // useEffect(() => {
   //   console.log("Изменились посты");
   // }, [posts]);
   
   //Сохраняем посты после каждого изменения
-  useEffect(() => {
-    localStorage.setItem(
-      "posts",
-      JSON.stringify(posts)
-    );
-  }, [posts]);
+  // useEffect(() => {
+  //   localStorage.setItem(
+  //     "posts",
+  //     JSON.stringify(posts)
+  //   );
+  // }, [posts]);
 
   function addPost(event) {
     event.preventDefault();
+
+    if(!title.trim() || !text.trim()){
+      setError("Заполните заголовок и текст поста!");
+      return;
+    }
 
     const newPost = {
       id: Date.now(),
       title: title,
       text: text,
-      author: "Viktor",
+      author: userName,
     };
 
     setPosts([...posts, newPost]);
     setTitle("");
     setText("");
+    setError("");
   }
 
   function deletePost(id) {
@@ -73,6 +84,15 @@ function Profile() {
       <ProfileCard />
       <div className="feed">
         <h2>Мои публикации</h2>
+        <p>Всего публикаций: {posts.length}</p>
+
+        <form className="post-form" onSubmit={addPost}>
+          {error && (
+            <p className="form-error">
+              {error}
+            </p>
+          )}
+        </form>
 
         <button
           type="button"

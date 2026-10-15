@@ -5,7 +5,7 @@ function About(){
         <section className="page">
             <h1>О проекте</h1>
             <p></p>
-            <img src="images.jfif" alt="" />
+            <img src="images (1).jfif" alt="" />
         </section>
     );
 }

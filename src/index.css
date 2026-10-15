@@ -80,6 +80,48 @@ h2 {
   transform: rotate(-0.6deg);
 }
 
+/* --- навигация сверху --- */
+nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin: 0 0 28px;
+  padding: 0;
+}
+
+nav a {
+  display: inline-block;
+  padding: 8px 16px;
+  color: var(--ink);
+  background: var(--paper-2);
+  border: 2px solid var(--line);
+  border-radius: 14px 18px 12px 20px / 18px 12px 20px 14px;
+  box-shadow: var(--shadow-soft);
+  text-decoration: none;
+  border-bottom: 2px solid var(--line);
+  transform: rotate(-0.6deg);
+  transition: transform 0.12s ease, box-shadow 0.12s ease,
+    background-color 0.12s ease, color 0.12s ease;
+}
+
+nav a:nth-child(even) {
+  transform: rotate(0.6deg);
+}
+
+nav a:hover {
+  color: #fffdf7;
+  background: var(--accent);
+  transform: rotate(0deg) translate(-1px, -1px);
+  box-shadow: var(--shadow);
+}
+
+nav a:active {
+  transform: rotate(0deg) translate(2px, 2px);
+  box-shadow: 1px 1px 0 rgba(47, 43, 40, 0.85);
+}
+
 /* --- форма публикации поста --- */
 form,
 .post-form {
@@ -278,6 +320,14 @@ small {
 
   h1 {
     font-size: 24px;
+  }
+
+  nav {
+    gap: 10px;
+  }
+
+  nav a {
+    padding: 7px 12px;
   }
 
   form,
