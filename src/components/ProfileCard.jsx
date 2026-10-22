@@ -50,7 +50,7 @@ function ProfileCard() {
     //     );
     // }
 
-    const {userName} = useUser();
+    const {userName, avatar} = useUser();
     return (
         <section className="profile-card">
             <div className="profile">

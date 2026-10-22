@@ -86,13 +86,13 @@ function Profile() {
         <h2>Мои публикации</h2>
         <p>Всего публикаций: {posts.length}</p>
 
-        <form className="post-form" onSubmit={addPost}>
+        {/* <form className="post-form" onSubmit={addPost}>
           {error && (
             <p className="form-error">
               {error}
             </p>
           )}
-        </form>
+        </form> */}
 
         <button
           type="button"

@@ -1,68 +1,132 @@
+/* =========================================================
+   ТЕМЫ — глобальные переменные
+   ========================================================= */
+
+/* Светлая тема по умолчанию */
 :root {
-  --paper: #fdfaf3;
-  --paper-2: #fffdf7;
-  --ink: #2f2b28;
-  --ink-soft: #6b6459;
-  --line: #2f2b28;
-  --accent: #e2725b;
-  --accent-2: #7fa88b;
-  --shadow: 3px 3px 0 rgba(47, 43, 40, 0.85);
-  --shadow-soft: 2px 2px 0 rgba(47, 43, 40, 0.18);
-  --radius-blob: 18px 22px 16px 26px / 24px 16px 22px 18px;
+  --paper:      #fdfaf3;
+  --paper-2:    #fffdf7;
+  --ink:        #2f2b28;
+  --ink-soft:   #6b6459;
+  --line:       #2f2b28;
+  --accent:     #e2725b;
+  --accent-2:   #7fa88b;
+  --shadow:     3px 3px 0 rgba(47, 43, 40, 0.85);
+  --shadow-soft:2px 2px 0 rgba(47, 43, 40, 0.18);
+  --tape:       rgba(255, 240, 150, 0.75);
+  --noise-a:    rgba(47, 43, 40, 0.06);
+  --noise-b:    rgba(47, 43, 40, 0.04);
+  --radius-blob:   18px 22px 16px 26px / 24px 16px 22px 18px;
   --radius-blob-2: 24px 14px 28px 18px / 16px 26px 14px 24px;
+  
+  color-scheme: light;
 }
 
-* {
-  box-sizing: border-box;
+/* Тёмная тема */
+body:has(.theme-dark),
+.theme-dark {
+  --paper:      #1b1917;
+  --paper-2:    #252220;
+  --ink:        #f0ebe1;
+  --ink-soft:   #b6ad9f;
+  --line:       #d9d1c2;
+  --accent:     #e88670;
+  --accent-2:   #93bda2;
+  --shadow:     3px 3px 0 rgba(0, 0, 0, 0.9);
+  --shadow-soft:2px 2px 0 rgba(0, 0, 0, 0.5);
+  --tape:       rgba(232, 134, 112, 0.35);
+  --noise-a:    rgba(240, 235, 225, 0.05);
+  --noise-b:    rgba(240, 235, 225, 0.03);
+  
+  color-scheme: dark;
 }
 
-html,
-body,
-#root {
+/* =========================================================
+   БАЗА — ФОН НА ВЕСЬ ЭКРАН (БЕЗ ПРЯМОУГОЛЬНИКОВ)
+   ========================================================= */
+
+* { box-sizing: border-box; }
+
+html {
   min-height: 100%;
 }
 
+/* Фон намертво привязан к body. Он не может быть прямоугольником,
+   потому что body всегда занимает 100% ширины окна браузера. */
 body {
   margin: 0;
   padding: 0;
+  min-height: 100vh;
+  
+  /* Цвета темы */
   background-color: var(--paper);
-  /* лёгкая "бумажная" текстура */
   background-image:
-    radial-gradient(rgba(47, 43, 40, 0.06) 1px, transparent 1px),
-    radial-gradient(rgba(47, 43, 40, 0.04) 1px, transparent 1px);
+    radial-gradient(var(--noise-a) 1px, transparent 1px),
+    radial-gradient(var(--noise-b) 1px, transparent 1px);
   background-size: 22px 22px, 22px 22px;
   background-position: 0 0, 11px 11px;
+  background-attachment: fixed;
+  
   color: var(--ink);
   font-family: "Comic Sans MS", "Segoe Print", "Bradley Hand", "Marker Felt",
     "Trebuchet MS", system-ui, sans-serif;
   font-size: 17px;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
+  
+  /* Плавный переход при смене темы */
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* =========================================================
+   КОНТЕЙНЕРЫ (ОГРАНИЧЕНИЕ ШИРИНЫ КОНТЕНТА)
+   ========================================================= */
+
+/* Убираем любые фоны у оберток React, чтобы они не перекрывали body */
+#root, .app {
+  min-height: 100vh;
+  width: 100%;
+  background: transparent !important;
+  color: var(--ink);
+  margin: 0;
+  padding: 0;
+}
+
+/* Центрируем и ограничиваем ширину всего контента */
 #root {
-  max-width: 720px;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Центрируем дочерние блоки */
   padding: 32px 20px 80px;
 }
 
-/* --- заголовки --- */
-h1,
-h2,
-h3 {
+/* Ограничиваем ширину основных блоков, чтобы они не были на весь экран */
+nav, form, .post-form, ul, .posts, h1, h2, h3, p, hr, .page-content, main {
+  width: 100%;
+  max-width: 760px; /* Ширина блоков */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ===== ЗАГОЛОВКИ ===== */
+
+h1, h2, h3 {
   font-weight: 700;
   letter-spacing: 0.2px;
-  margin: 0 0 12px;
+  margin-top: 0;
+  margin-bottom: 12px;
+  color: var(--ink);
+  text-align: center;
 }
 
 h1 {
   font-size: 30px;
   position: relative;
-  display: inline-block;
+  display: table;
+  margin: 0 auto 20px;
   transform: rotate(-1.2deg);
 }
 
-/* подчёркивание "от руки" */
 h1::after {
   content: "";
   position: absolute;
@@ -75,19 +139,17 @@ h1::after {
   opacity: 0.55;
 }
 
-h2 {
-  font-size: 22px;
-  transform: rotate(-0.6deg);
-}
+h2 { font-size: 22px; transform: rotate(-0.6deg); }
 
-/* --- навигация сверху --- */
+/* ===== НАВИГАЦИЯ ===== */
+
 nav {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
   gap: 14px;
-  margin: 0 0 28px;
+  margin-bottom: 28px;
   padding: 0;
 }
 
@@ -100,18 +162,15 @@ nav a {
   border-radius: 14px 18px 12px 20px / 18px 12px 20px 14px;
   box-shadow: var(--shadow-soft);
   text-decoration: none;
-  border-bottom: 2px solid var(--line);
   transform: rotate(-0.6deg);
   transition: transform 0.12s ease, box-shadow 0.12s ease,
-    background-color 0.12s ease, color 0.12s ease;
+    background-color 0.3s ease, color 0.3s ease;
 }
 
-nav a:nth-child(even) {
-  transform: rotate(0.6deg);
-}
+nav a:nth-child(even) { transform: rotate(0.6deg); }
 
 nav a:hover {
-  color: #fffdf7;
+  color: var(--paper-2);
   background: var(--accent);
   transform: rotate(0deg) translate(-1px, -1px);
   box-shadow: var(--shadow);
@@ -119,12 +178,12 @@ nav a:hover {
 
 nav a:active {
   transform: rotate(0deg) translate(2px, 2px);
-  box-shadow: 1px 1px 0 rgba(47, 43, 40, 0.85);
+  box-shadow: 1px 1px 0 var(--line);
 }
 
-/* --- форма публикации поста --- */
-form,
-.post-form {
+/* ===== ФОРМА ===== */
+
+form, .post-form {
   background: var(--paper-2);
   border: 2px solid var(--line);
   border-radius: var(--radius-blob);
@@ -135,11 +194,11 @@ form,
   flex-direction: column;
   gap: 12px;
   position: relative;
+  color: var(--ink);
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
-/* "скотч" сверху — как будто приклеено */
-form::before,
-.post-form::before {
+form::before, .post-form::before {
   content: "";
   position: absolute;
   top: -12px;
@@ -147,18 +206,16 @@ form::before,
   width: 92px;
   height: 22px;
   transform: translateX(-50%) rotate(-2.5deg);
-  background: rgba(255, 240, 150, 0.75);
-  border: 1px solid rgba(47, 43, 40, 0.25);
+  background: var(--tape);
+  border: 1px solid var(--line);
   border-radius: 3px;
   box-shadow: var(--shadow-soft);
   pointer-events: none;
 }
 
-/* --- поля ввода --- */
-input,
-textarea,
-select,
-button {
+/* ===== ПОЛЯ ===== */
+
+input, textarea, select, button {
   font: inherit;
   color: var(--ink);
 }
@@ -169,24 +226,14 @@ input[type="search"],
 textarea,
 select {
   width: 100%;
-  background: #fff;
+  background: var(--paper);
   border: 2px solid var(--line);
   border-radius: var(--radius-blob-2);
   padding: 10px 14px;
   outline: none;
   transition: transform 0.12s ease, box-shadow 0.12s ease,
-    background-color 0.12s ease;
+    background-color 0.3s ease, border-color 0.3s ease;
   box-shadow: var(--shadow-soft);
-}
-
-/* разные повороты у полей — «от руки» */
-form input[type="text"]:nth-of-type(1),
-.post-form input[type="text"]:nth-of-type(1) {
-  transform: rotate(0.4deg);
-}
-form input[type="text"]:nth-of-type(2),
-.post-form input[type="text"]:nth-of-type(2) {
-  transform: rotate(-0.4deg);
 }
 
 textarea {
@@ -196,25 +243,25 @@ textarea {
   transform: rotate(0.25deg);
 }
 
-input:focus,
-textarea:focus,
-select:focus {
-  background: #fffdf2;
-  box-shadow: 4px 4px 0 rgba(226, 114, 91, 0.5);
+input:focus, textarea:focus, select:focus {
+  background: var(--paper-2);
+  border-color: var(--accent);
+  box-shadow: 4px 4px 0 rgba(232, 134, 112, 0.45);
   transform: rotate(0deg);
 }
 
-input::placeholder,
-textarea::placeholder {
-  color: #a8a094;
+input::placeholder, textarea::placeholder {
+  color: var(--ink-soft);
+  opacity: 0.75;
   font-style: italic;
 }
 
-/* --- кнопки --- */
+/* ===== КНОПКИ ===== */
+
 button {
   align-self: flex-start;
   background: var(--accent);
-  color: #fffdf7;
+  color: var(--paper-2);
   border: 2px solid var(--line);
   border-radius: 14px 18px 12px 20px / 18px 12px 20px 14px;
   padding: 9px 20px;
@@ -222,129 +269,94 @@ button {
   cursor: pointer;
   box-shadow: var(--shadow);
   transform: rotate(-1deg);
-  transition: transform 0.12s ease, box-shadow 0.12s ease,
-    background-color 0.12s ease;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
 }
 
 button:hover {
-  background: #d1604a;
+  filter: brightness(1.08);
   transform: rotate(0.5deg) translate(-1px, -1px);
-  box-shadow: 5px 5px 0 rgba(47, 43, 40, 0.85);
+  box-shadow: 5px 5px 0 var(--line);
 }
 
 button:active {
   transform: rotate(0deg) translate(2px, 2px);
-  box-shadow: 1px 1px 0 rgba(47, 43, 40, 0.85);
+  box-shadow: 1px 1px 0 var(--line);
 }
 
-button.secondary {
-  background: var(--accent-2);
-}
+button.secondary { background: var(--accent-2); }
 
-/* --- список постов --- */
-ul,
-.posts {
+/* ===== СПИСОК ПОСТОВ ===== */
+
+ul, .posts {
   list-style: none;
   padding: 0;
-  margin: 28px 0 0;
+  margin-top: 28px;
   display: flex;
   flex-direction: column;
   gap: 18px;
 }
 
-li,
-.post {
+li, .post {
   background: var(--paper-2);
   border: 2px solid var(--line);
   border-radius: var(--radius-blob);
   padding: 16px 18px;
   box-shadow: var(--shadow);
   position: relative;
+  color: var(--ink);
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
-/* чередуем наклон карточек */
-li:nth-child(odd),
-.post:nth-child(odd) {
-  transform: rotate(0.7deg);
-}
-li:nth-child(even),
-.post:nth-child(even) {
-  transform: rotate(-0.7deg);
-}
+li:nth-child(odd), .post:nth-child(odd) { transform: rotate(0.7deg); }
+li:nth-child(even), .post:nth-child(even) { transform: rotate(-0.7deg); }
 
-li h3,
-.post h3 {
+li h3, .post h3 {
   margin: 0 0 6px;
   font-size: 19px;
+  color: var(--ink);
 }
 
-li p,
-.post p {
+li p, .post p {
   margin: 0;
   color: var(--ink-soft);
 }
 
-/* --- разделитель "от руки" --- */
+/* ===== РАЗДЕЛИТЕЛЬ ===== */
+
 hr {
   border: none;
   height: 3px;
   background: var(--line);
   border-radius: 60% 40% 70% 30% / 100% 100% 60% 60%;
   opacity: 0.35;
-  margin: 28px 0;
+  margin-top: 28px;
+  margin-bottom: 28px;
   transform: rotate(-0.3deg);
 }
 
-/* --- ссылки --- */
+/* ===== ССЫЛКИ ===== */
+
 a {
   color: var(--accent);
   text-decoration: none;
   border-bottom: 2px dashed currentColor;
 }
 
-a:hover {
-  color: #b84d38;
-}
+a:hover { filter: brightness(1.15); }
 
-/* --- мелочи --- */
-small {
-  color: var(--ink-soft);
-  font-style: italic;
-}
+small { color: var(--ink-soft); font-style: italic; }
 
-/* --- мобильная адаптация --- */
+/* ===== МОБИЛКА ===== */
+
 @media (max-width: 520px) {
-  #root {
-    padding: 20px 14px 60px;
-  }
-
-  h1 {
-    font-size: 24px;
-  }
-
-  nav {
-    gap: 10px;
-  }
-
-  nav a {
-    padding: 7px 12px;
-  }
-
-  form,
-  .post-form {
-    padding: 14px;
-    transform: rotate(0deg);
-  }
-
-  li,
-  .post {
-    transform: rotate(0deg);
-  }
+  #root { padding: 20px 14px 60px; }
+  h1 { font-size: 24px; }
+  nav { gap: 10px; }
+  nav a { padding: 7px 12px; }
+  form, .post-form { padding: 14px; transform: rotate(0deg); }
+  li, .post { transform: rotate(0deg); }
 }
 
-/* --- доступность: уважаем настройки --- */
 @media (prefers-reduced-motion: reduce) {
-  * {
-    transition: none !important;
-  }
+  * { transition: none !important; }
 }

@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom"
 import { PostProvider } from "./context/PostContext"
 import { UserProvider } from "./context/userContext"
+import { useTheme } from "./context/ThemeContext"
 
 //import { useState } from 'react'
 //import './App.css'
@@ -14,8 +15,9 @@ import About from "./pages/About"
 function App() {
   // const [count, setCount] = useState(0)
 
+  const {theme} = useTheme();
   return (
-    <div className='app'>
+    <div className={`app theme-${theme}`}>
       <Header />
       <main>
         <UserProvider>
