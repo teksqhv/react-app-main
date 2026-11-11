@@ -360,3 +360,35 @@ small { color: var(--ink-soft); font-style: italic; }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; }
 }
+
+.currency {
+  max-width: 600px;
+  margin: 30px auto;
+  padding: 20px;
+}
+
+.currency-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.currency-item{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+
+.currency-item h3,
+.currency-item p {
+  margin: 5px 0;
+}
+
+.currency-item strong {
+  font-size: 20px;
+}
+
+
